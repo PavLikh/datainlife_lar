@@ -10,7 +10,6 @@ class GroupUser extends Model
     use HasFactory;
 
     protected $table = 'group_user';
-    // protected $fillable = ['user_id', 'expired_at'];
     protected $primaryKey = 'user_id';
     public $incrementing = false;
     public $timestamps = false;
