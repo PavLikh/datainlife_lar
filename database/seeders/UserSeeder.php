@@ -16,18 +16,7 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        User::factory()->count(3)->create();
+        User::factory(10)->create();
 
-
-        // $users = [];
-        // foreach (range(1, 3) as $i) {
-        //     $users[] = [
-        //         'name' => "User $i",
-        //         'email' => "user$i@mail.ru",
-        //         'password' => "password$i"
-        //     ];
-        // }
-
-        // DB::table('users')->insert($users);
     }
 }

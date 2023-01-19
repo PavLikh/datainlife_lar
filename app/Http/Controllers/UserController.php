@@ -5,40 +5,33 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Group;
-use App\Models\Channel;
+use App\Models\GroupUser;
 
 class UserController extends Controller
 {
     public function index() {
 
-        // $channel = Channel::find(1);
-        // $user = $channel->user;
-        // $a = Group::pluck(['id', 'expire_hours'])->all();
-        $currentTime = date("H", time());
-        echo 'time: '. time();
-        echo '<br>';
-        echo 'date: '. date("H");
-        echo '<br>';
-        echo 'date+1:'. date('H:i:s', strtotime('5 hours'));
-        echo '<br>';
-        // echo now()->addMinutes(200);
-        echo now()->addHours(2);
-        echo '<br>';
+        $userId = User::inRandomOrder()->pluck('id')->first();
+        $groupId = Group::inRandomOrder()->pluck('id')->first();
 
+        $grUser = new GroupUser;
+        $grUser->user_id = $userId;
+        $grUser->group_id = $groupId;
 
-
-        $a = Group::get()->all();
-
-        dd($a);
-        // return $user;
-        return User::with('channel')->get();// другой способо в модели User
-        // return User::get();// другой способо в модели User
-
+        try {
+            $grUser->save();
+        } catch(\Illuminate\Database\QueryException $e){
+            $errorCode = $e->errorInfo[1];
+            if($errorCode == '1062'){
+                dd('Duplicate Entry');
+            }
+        }
+        return User::with('groups')->get();
     }
 
     public function show(User $user) {
         
-        return $user->load('channel');
+        return $user->load('groups');
     
     }
 }
